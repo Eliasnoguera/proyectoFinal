@@ -1,6 +1,8 @@
 from typing import Any
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.conf import settings
 # Create your models here.
 
 
@@ -28,6 +30,18 @@ class Post(models.Model):
     def __str__(self):
         return self.titulo
     
-    def delete(self, using: None, keep_parents: False):
-        self.imagen.delete(self.imagen.name) 
-        super().delete()
+    def delete(self, using=None, keep_parents=False):
+       
+        if self.imagen:
+            self.imagen.delete(save=False)  
+        
+        super().delete(using=using, keep_parents=keep_parents)
+
+class Comentario(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
+    post = models.ForeignKey(Post, related_name="comentarios", on_delete=models.CASCADE)
+    contenido = models.TextField(null=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comentario de {self.usuario.username} en {self.post.titulo}'

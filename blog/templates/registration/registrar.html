@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{% block title %}Registro de usuario{% endblock title %}</title>
+
+{% block contenido %}
+<div class="d-flex flex-column min-vh-100">
+    <div class="container mt-5 mb-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <form method="post" enctype="multipart/form-data" class="p-5 border rounded bg-light shadow-lg">
+                    <h1 class="text-center mb-4">Registración</h1>
+                    
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-info">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% csrf_token %}
+                    
+                    <div class="form-group mb-3 text-center">
+                        <label for="id_nombre_apellido">Nombre</label>
+                        <div class="d-flex justify-content-center">
+                            {{ form.username|safe }}
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 text-center">
+                        <label for="id_nombre_apellido">Apellido</label>
+                        <div class="d-flex justify-content-center">
+                            {{ form.last_name|safe }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3 text-center">
+                        <label for="id_email">Email</label>
+                        <div class="d-flex justify-content-center">
+                            {{ form.email|safe }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3 text-center">
+                        <label for="id_password">Contraseña</label>
+                        <div class="d-flex justify-content-center">
+                            {{ form.password1|safe }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3 text-center">
+                        <label for="id_confirm_password">Confirmar Contraseña</label>
+                        <div class="d-flex justify-content-center">
+                            {{ form.password2|safe }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_imagen">Subir Imagen</label>
+                        {{ form.imagen }}
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Registrar</button>
+                        <div class="d-flex justify-content-center"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

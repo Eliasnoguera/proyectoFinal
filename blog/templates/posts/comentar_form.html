@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<h3>Añadir un comentario</h3>
+<form method="post" action="{% url 'apps.posts:comentar_post' posts.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar comentario</button>
+</form>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container mt-5">
+  
+    {% if request.user.perfil.perfil_tipo == 'colaborador' %}
+        <a href="{% url 'apps.posts:post_create' %}" class="btn btn-success mb-4">Crear Nuevo Post</a>
+    {% endif %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+   
+    <form method="GET" action="" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" name="buscar" class="form-control" placeholder="Buscar posts..." value="{{ request.GET.buscar }}">
+            </div>
+           
+            <div class="col-md-3">
+                <select name="categoria" class="form-control" onchange="this.form.submit()">
+                    <option value="">Buscar por categoría</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
+                            {{ categoria.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+           
+            <div class="col-md-3">
+                <select name="orden" class="form-control" onchange="this.form.submit()">
+                    <option value="">Ordenar por</option>
+                    <option value="titulo_asc" {% if request.GET.orden == 'titulo_asc' %}selected{% endif %}>Título (A-Z)</option>
+                    <option value="titulo_desc" {% if request.GET.orden == 'titulo_desc' %}selected{% endif %}>Título (Z-A)</option>
+                    <option value="antiguedad_asc" {% if request.GET.orden == 'antiguedad_asc' %}selected{% endif %}>Antigüedad (ascendente)</option>
+                    <option value="antiguedad_desc" {% if request.GET.orden == 'antiguedad_desc' %}selected{% endif %}>Antigüedad (descendente)</option>
+                </select>
+            </div>
+           
+            <div class="col-md-3 d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a href="{% url 'apps.posts:posts' %}" class="btn btn-secondary ms-2">Limpiar filtros</a>
+            </div>
+        </div>
+    </form>
+
+   
+    <div class="row">
+        {% for i in posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ i.titulo }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ i.subtitulo }}</h6>
+                        <p class="card-text"><strong>Categoría:</strong> {{ i.categoria }}</p>
+                        <p class="card-text"><strong>Fecha:</strong> {{ i.fecha|date:"d/m/Y" }}</p>
+                        <a href="{% url 'apps.posts:post_individual' i.id %}" class="btn btn-primary">Ingresa a este post</a>
+
+                       
+                        {% if request.user.perfil.perfil_tipo == 'colaborador' %}
+                            <a href="{% url 'apps.posts:post_update' i.pk %}" class="btn btn-warning mt-2">Modificar</a>
+                            <form action="{% url 'apps.posts:post_delete' i.id %}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este post?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mt-2">Eliminar</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <h1>No hay registros</h1>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<center>
+    <div class="container" style="margin-top: 370px;">
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'apps.usuario:login' %}" class="btn btn-primary">Iniciar sesión nuevamente</a>
+    </div>
+</center>
+{% endblock %}

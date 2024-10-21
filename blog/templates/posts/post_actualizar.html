@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Post</h1>
+<form method="post" enctype="multipart/form-data" onsubmit="return confirm('{% if form.instance.pk %}¿Estás seguro de que deseas modificar este post?{% endif %}');">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}

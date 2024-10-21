@@ -1,5 +1,59 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-<h1>estamos en el index</h1>
+<div class="container mt-5">
+   
+    <div class="text-center bg-dark text-black py-5" style="background-image: url('static/img/fondo.jpg'); background-size: cover; background-position: center;">
+        <h1 class="display-4" style="font-weight: 500;">Bienvenidos!!</h1>
+        <p class="lead" style="font-weight: 500;">Descubre las últimas noticias relacionadas al mundo financiero.</p>
+    </div>
+
+  
+    <div class="row mt-4">
+       
+        <div class="col-md-8">
+            <article class="mb-5 border border-light rounded shadow-sm p-4">
+                <h2 class="h4 text-primary">NOTICIAS DE HOY: El Gobierno logró un superávit fiscal de $466.631</h2>
+                <p>El Sector Público Nacional (SPN) registró en septiembre un resultado primario de $816.447 millones y un superávit financiero de $466.631 millones, 
+                    con lo cual completó así nueve meses de resultados favorables, algo que, en el acumulado anual, no ocurría desde 2010. 
+                    Así lo informó el Ministerio de Economía, que indicó que "el superávit financiero alcanzado el mes pasado contrasta con el déficit registrado en septiembre de 2023, 
+                    que a precios actuales fue equivalente a casi $1,6 billones".</p>
+                <img src="static/img/superfiscal.jpg" class="img-fluid mb-3 rounded" alt="Superávit Fiscal">
+            </article>
+        </div>
+
+       
+        <div class="col-md-4">
+            <h2 class="h4 mb-4 text-secondary">Últimos Posts Publicados</h2>
+            {% for i in ultimos_posts %}
+                <aside class="mb-4 border border-light rounded shadow-sm p-3">
+                    <img src="{{ i.imagen.url }}" class="img-fluid mb-2 rounded" alt="{{ i.titulo }}">
+                    <h3 class="h5 text-dark">{{ i.titulo }}</h3>
+                    <p class="text-muted">{{ i.texto|truncatewords:20 }}</p>
+                    <a href="{% url 'apps.posts:post_individual' i.id %}" class="btn btn-outline-primary btn-sm">Leer más &gt;&gt;</a>
+                </aside>
+            {% empty %}
+                <p>No hay posts disponibles.</p>
+            {% endfor %}
+            
+        </div>
+        
+    </div>
+</div>
+
+
+<style>
+    .bg-dark {
+        background-color: #343a40 !important; 
+    }
+    .rounded {
+        border-radius: 0.5rem; 
+    }
+    .border-light {
+        border-color: #d3d3d3 !important; 
+    }
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important; 
+    }
+</style>
 {% endblock %}
